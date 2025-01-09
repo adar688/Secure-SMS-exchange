@@ -68,29 +68,29 @@ def verify_rabin(n: int, digest: bytes, s: int, padding: int) -> bool:
 def sign(hex_message: str, p: int, q: int) -> tuple:
     return sign_rabin(p, q, bytes.fromhex(hex_message))
 
-def verify(hex_message: str, padding: str, hex_signature: str, n: int):
-    return verify_rabin(n, bytes.fromhex(hex_message), int(hex_signature, 16), int(padding))
+def verify(hex_message: str, padding: int, signature: int, n: int):
+    return verify_rabin(n, bytes.fromhex(hex_message), signature, padding)
 
-# Generate keys
-seed = "1234567890abcdef1234567890abcdef"  # Valid hex seed (32 characters for even length)
-p, q = gen_prime_pair(seed)
-n = p * q
+# # Generate keys
+# seed = "1234567890abcdef1234567890abcdef"  # Valid hex seed (32 characters for even length)
+# p, q = gen_prime_pair(seed)
+# n = p * q
 
-# Message to sign
-hex_message = "4d657373616765"  # "Message" in ASCII, encoded as hex
+# # Message to sign
+# hex_message = "4d657373616765"  # "Message" in ASCII, encoded as hex
 
-# Sign the message
-signature, padding = sign(hex_message, p, q)
+# # Sign the message
+# signature, padding = sign(hex_message, p, q)
 
-# Verify the signature
-is_valid = verify_rabin(n, bytes.fromhex(hex_message), signature, padding)
+# # Verify the signature
+# is_valid = verify_rabin(n, bytes.fromhex(hex_message), signature, padding)
 
-# Results (no unnecessary prints)
-print("Keys generated:")
-print(f"p: {p}")
-print(f"q: {q}")
-print(f"n: {n}")
-print("\nMessage to sign (hex):", hex_message)
-print("Signature:", signature)
-print("Padding:", padding)
-print("Signature valid:", is_valid)
+# # Results (no unnecessary prints)
+# print("Keys generated:")
+# print(f"p: {p}")
+# print(f"q: {q}")
+# print(f"n: {n}")
+# print("\nMessage to sign (hex):", hex_message)
+# print("Signature:", signature)
+# print("Padding:", padding)
+# print("Signature valid:", is_valid)

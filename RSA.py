@@ -82,27 +82,27 @@ def decrypt(pk, ciphertext):
     return ''.join(plain)
 
 
-if __name__ == '__main__':
-    '''
-    Detect if the script is being run directly by the user
-    '''
-    print("===========================================================================================================")
-    print("================================== RSA Encryptor / Decrypter ==============================================")
-    print(" ")
+# if __name__ == '__main__':
+#     '''
+#     Detect if the script is being run directly by the user
+#     '''
+#     print("===========================================================================================================")
+#     print("================================== RSA Encryptor / Decrypter ==============================================")
+#     print(" ")
 
-    print(" - Generating your public / private key-pairs now . . .")
+#     print(" - Generating your public / private key-pairs now . . .")
 
-    public, private = generate_key_pair()
+#     public, private = generate_key_pair()
 
-    #print(" - Your public key is ", public, " and your private key is ", private)
+#     #print(" - Your public key is ", public, " and your private key is ", private)
 
-    message = "hello bob"
-    encrypted_msg = encrypt(public, message)
+#     message = "hello bob"
+#     encrypted_msg = encrypt(public, message)
 
-    print(" - Your encrypted message is: ", ''.join(map(lambda x: str(x), encrypted_msg)))
-    print(" - Decrypting message with private key ", private, " . . .")
-    print(" - Your message is: ", decrypt(private, encrypted_msg))
+#     print(" - Your encrypted message is: ", ''.join(map(lambda x: str(x), encrypted_msg)))
+#     print(" - Decrypting message with private key ", private, " . . .")
+#     print(" - Your message is: ", decrypt(private, encrypted_msg))
 
-    print(" ")
-    print("============================================ END ==========================================================")
-    print("===========================================================================================================")
+#     print(" ")
+#     print("============================================ END ==========================================================")
+#     print("===========================================================================================================")

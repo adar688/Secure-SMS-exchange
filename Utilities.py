@@ -50,3 +50,15 @@ def modular_inverse(a, m):
         m, a = a % m, m
         x0, x1 = x1 - q * x0, x0
     return x1 + m0 if x1 < 0 else x1
+
+def text_to_binary(text):
+    # Convert each character to its binary representation (8 bits)
+    binary_string = ''.join(f"{ord(char):08b}" for char in text)
+    return binary_string
+
+def binary_to_text(binary_string):
+    # Split the binary string into chunks of 8 bits
+    binary_chunks = [binary_string[i:i+8] for i in range(0, len(binary_string), 8)]
+    # Convert each binary chunk to its ASCII character
+    text = ''.join(chr(int(chunk, 2)) for chunk in binary_chunks)
+    return text

@@ -1,4 +1,5 @@
 import re
+import numpy as np
 from data_table_values import bin2hex, r, phi, SBoxDecimalTable, LTTable, LTTableInverse, IPTable, FPTable
 
 
@@ -185,7 +186,10 @@ def applyPermutation(permutationTable, input):
 
     result = ""
     for i in range(len(permutationTable)):
-        result = result + input[permutationTable[i]]
+        if isinstance(input[permutationTable[i]], (int, np.integer, np.float64)):
+            result += str(int(input[permutationTable[i]]))
+        else:
+            result += input[permutationTable[i]]
     return result
 
 
@@ -856,29 +860,29 @@ class SerpentDecryptor:
 
 
 
-# Example plaintext and key in hex format
-plaintext = "0123456789abcdeffedcba9876543210"
-hexKey = "0123456789abcdeffedcba987654321000112233445566778899aabbccddeeff"
+# # Example plaintext and key in hex format
+# plaintext = "0123456789abcdeffedcba9876543210"
+# hexKey = "0123456789abcdeffedcba987654321000112233445566778899aabbccddeeff"
 
-# Convert hexKey to bitstring
-userKey = hexstring2bitstring(hexKey)
-# Ensure it's 256 bits long
-userKey = userKey.ljust(256, '0')[:256]  # Adjust as necessary based on how your bitstrings are managed
+# # Convert hexKey to bitstring
+# userKey = hexstring2bitstring(hexKey)
+# # Ensure it's 256 bits long
+# userKey = userKey.ljust(256, '0')[:256]  # Adjust as necessary based on how your bitstrings are managed
 
-# Initialize the encryptor and decryptor with the user key
-encryptor = SerpentEncryptor(userKey)
-decryptor = SerpentDecryptor(userKey)
-# Encrypt the plaintext
-ciphertext = encryptor.encrypt(plaintext)
-print(f"Plaintext: {plaintext}")
-print(f"Ciphertext: {ciphertext}")
+# # Initialize the encryptor and decryptor with the user key
+# encryptor = SerpentEncryptor(userKey)
+# decryptor = SerpentDecryptor(userKey)
+# # Encrypt the plaintext
+# ciphertext = encryptor.encrypt(plaintext)
+# print(f"Plaintext: {plaintext}")
+# print(f"Ciphertext: {ciphertext}")
 
-# Decrypt the ciphertext
-decryptedText = decryptor.decrypt(ciphertext)
-print(f"Decrypted Text: {decryptedText}")
+# # Decrypt the ciphertext
+# decryptedText = decryptor.decrypt(ciphertext)
+# print(f"Decrypted Text: {decryptedText}")
 
-# Verify the decryption
-if plaintext.lower() == decryptedText.lower():
-    print("The decryption was successful and matches the original plaintext.")
-else:
-    print("The decrypted text does not match the original plaintext.")
+# # Verify the decryption
+# if plaintext.lower() == decryptedText.lower():
+#     print("The decryption was successful and matches the original plaintext.")
+# else:
+#     print("The decrypted text does not match the original plaintext.")
