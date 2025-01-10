@@ -7,6 +7,9 @@ import padding
 import numpy as np
 import os
 
+def print_separator():
+    print("\n" + "-"*50 + "\n")
+
 def generate_secret_key(bit_length =256):
     """Generates a random secret key for encryption."""
     if bit_length % 8 != 0:
@@ -45,26 +48,20 @@ def main():
     seed = "1234567890abcdef1234567890abcdef"
 
     #Generating keys 
-
-    alice_public_key_rsa, alice_private_key_rsa = RSA.generate_key_pair()
     alice_rabin_p, alice_rabin_q = Rabin.gen_prime_pair(seed)
-    alice_rabin_n = alice_rabin_p * alice_rabin_q
+    public_key_rabin = alice_rabin_p * alice_rabin_q
 
-    bob_public_key_rsa, bob_private_key_rsa = RSA.generate_key_pair()
-    bob_rabin_p, bob_rabin_q = Rabin.gen_prime_pair(seed)
+    public_key_rsa, private_key_rsa = RSA.generate_key_pair()
 
     secret_key = serpent.hexstring2bitstring(generate_secret_key())
 
     print("Welcome to Secure SMS Exchange System!")
-
+    print_separator()
     ############################ALICE################################
     print("Hello Alice!")
 
     # User input for SMS
-    #message = input("Enter the message to send to Bob: ")
-
-    message= "hello my name is adar i live in karmiel and study software engineering"
-    print("original message: ", message)
+    message = input("Enter the message to send to Bob: ")
 
     #add padding to the message to ensure the message is in length of 128 *x bits. 
     binary_message = Utilities.text_to_binary(message)
@@ -81,14 +78,15 @@ def main():
     print("Encrypting secret key with RSA...")
 
 
-    encrypted_key = RSA.encrypt(bob_public_key_rsa , secret_key)
+    encrypted_key = RSA.encrypt(public_key_rsa , secret_key)
     print("Secret key encrypted successfully.")
 
     # Step 3: Sign the encrypted message using Rabin Signature
     print("Generating Rabin signature...")
     signature, padding_sig = Rabin.sign(encrypted_message_hex, alice_rabin_p, alice_rabin_q)
     print("Signature generated successfully.")
-    print(padding_sig)
+
+    print_separator()
 
     # Display the encrypted message, key, and signature
     print("\nSecure Message Exchange Details:")
@@ -98,11 +96,12 @@ def main():
 
 
     #########################BOB######################################
-
+    print_separator()
+    print()
     print("Hello Bob!")
     #Step 4: Verification (for testing purposes)
     print("\nVerifying signature...")
-    is_valid = Rabin.verify(encrypted_message_hex, padding_sig, signature, alice_rabin_n)
+    is_valid = Rabin.verify(encrypted_message_hex, padding_sig, signature, public_key_rabin)
     if is_valid:
         print("Signature verified successfully.")
     else:
@@ -110,12 +109,12 @@ def main():
 
     # Step 5: Decrypt the secret key and message
     print("\nDecrypting the secret key...")
-    decrypted_key = RSA.decrypt(bob_private_key_rsa , encrypted_key)
+    decrypted_key = RSA.decrypt(private_key_rsa , encrypted_key)
     print("Secret key decrypted successfully.")
 
     print("Decrypting the message...")
     decrypted_message = decrypt_message(encrypted_message, decrypted_key)
-
+    print_separator()
     messageAfterPaddingDecode = padding.padding_decode(decrypted_message, block_size)
     print(f"Original Message: {Utilities.binary_to_text(messageAfterPaddingDecode)}")
 
