@@ -2,7 +2,6 @@ import serpent
 import RSA
 import Rabin
 import Utilities
-import data_table_values
 import padding 
 import numpy as np
 import os
@@ -49,9 +48,9 @@ def main():
 
     #Generating keys 
     alice_rabin_p, alice_rabin_q = Rabin.gen_prime_pair(seed)
-    public_key_rabin = alice_rabin_p * alice_rabin_q
+    Alice_public_key_rabin = alice_rabin_p * alice_rabin_q
 
-    public_key_rsa, private_key_rsa = RSA.generate_key_pair()
+    Bob_public_key_rsa, Bob_private_key_rsa = RSA.generate_key_pair()
 
     secret_key = serpent.hexstring2bitstring(generate_secret_key())
 
@@ -78,7 +77,7 @@ def main():
     print("Encrypting secret key with RSA...")
 
 
-    encrypted_key = RSA.encrypt(public_key_rsa , secret_key)
+    encrypted_key = RSA.encrypt(Bob_public_key_rsa , secret_key)
     print("Secret key encrypted successfully.")
 
     # Step 3: Sign the encrypted message using Rabin Signature
@@ -101,7 +100,7 @@ def main():
     print("Hello Bob!")
     #Step 4: Verification (for testing purposes)
     print("\nVerifying signature...")
-    is_valid = Rabin.verify(encrypted_message_hex, padding_sig, signature, public_key_rabin)
+    is_valid = Rabin.verify(encrypted_message_hex, padding_sig, signature, Alice_public_key_rabin)
     if is_valid:
         print("Signature verified successfully.")
     else:
@@ -109,7 +108,7 @@ def main():
 
     # Step 5: Decrypt the secret key and message
     print("\nDecrypting the secret key...")
-    decrypted_key = RSA.decrypt(private_key_rsa , encrypted_key)
+    decrypted_key = RSA.decrypt(Bob_private_key_rsa , encrypted_key)
     print("Secret key decrypted successfully.")
 
     print("Decrypting the message...")
